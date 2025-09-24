@@ -1,0 +1,14 @@
+---
+description: Git hygiene and workflow for branching, commits, and PR practices
+globs: ["**/.git/**", "**/*"]
+alwaysApply: false
+---
+## Branching
+- Use feature branches; name by scope/issue.
+
+## Commits
+- Small, atomic commits with imperative subject.
+
+## PRs
+- Provide context, screenshots, and test notes.
+

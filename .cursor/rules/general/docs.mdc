@@ -1,0 +1,15 @@
+---
+description: Documentation standards and conventions for READMEs, ADRs, and code comments
+globs: ["**/*.md", "**/*.mdx"]
+alwaysApply: false
+---
+
+## READMEs
+- Keep quickstart, scripts, and env setup current.
+
+## ADRs
+- Record key decisions with context, options, and consequences.
+
+## Comments
+- Explain "why" not "how"; keep concise.
+

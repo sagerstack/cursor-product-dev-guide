@@ -1,0 +1,122 @@
+---
+description: Generate implementation plans from PRDs; outputs to /impl-plan as impl-plan-[prd-file-name].md
+globs: ["**/impl-plan/*.md"]
+alwaysApply: false
+---
+# Rule: Generating an Implementation Plan from a PRD
+
+## Goal
+
+To guide an AI assistant in creating a detailed, step-by-step implementation plan in Markdown format based on an existing Product Requirements Document (PRD). The implementation plan should guide a developer through implementation with comprehensive testing and coverage requirements.
+
+## Output
+
+- **Format:** Markdown (`.md`)
+- **Location:** `/impl-plan/`
+- **Filename:** `impl-plan-[prd-file-name].md` (e.g., `impl-plan-prd-user-profile-editing.md`)
+
+## Process
+
+1.  **Receive PRD Reference:** The user points the AI to a specific PRD file
+2.  **Analyze PRD:** The AI reads and analyzes the functional requirements, user stories, acceptance criteria, and other sections of the specified PRD.
+3.  **Phase 1: Generate Parent Tasks:** Based on the PRD analysis, create the file and generate the main, high-level tasks required to implement the feature. Implementation strategy should prioritize the delivery of an end-to-end MVP (Minimal Viable Product) with the first feature. Subsequent features should be implemented end-to-end next. This is preferred over a waterfall strategy, where the entire backend and domain is developed before the front-end or user interaction layer. Use your judgement on how many high-level tasks to use. It's likely to be about 5. Present these tasks to the user in the specified format (without sub-tasks yet). Inform the user: "I have generated the high-level tasks based on the PRD. Ready to generate the sub-tasks? Respond with 'Go' to proceed."
+4.  **Wait for Confirmation:** Pause and wait for the user to respond with "Go".
+5.  **Phase 2: Generate Sub-Tasks:** Once the user confirms, break down each parent task into smaller, actionable sub-tasks necessary to complete the parent task. Ensure sub-tasks logically follow from the parent task and cover the implementation details implied by the PRD.
+6.  **Identify Relevant Files:** Based on the tasks and PRD, identify potential files that will need to be created or modified. List these under the `Relevant Files` section, including corresponding test files if applicable.
+7.  **Generate Final Output:** Combine the parent tasks, sub-tasks, relevant files, and notes into the final Markdown structure.
+8.  **Save Implementation Plan:** Save the generated document in the `/impl-plan/` directory with the filename `impl-plan-[prd-file-name].md`, where `[prd-file-name]` matches the base name of the input PRD file (e.g., if the input was `prd-user-profile-editing.md`, the output is `impl-plan-prd-user-profile-editing.md`).
+
+## Testing and Coverage Requirements
+
+Every sub-task must include mandatory testing and coverage validation steps:
+
+### Mandatory Steps for Each Sub-Task:
+1. **Run All Tests:** Execute complete test suite after implementation
+2. **Fix Failing Tests:** Address any test failures before proceeding
+3. **Generate Coverage Report:** Run coverage analysis to measure line coverage
+4. **Analyze Coverage Gaps:** Examine areas with less than 100% coverage
+5. **Add Missing Tests:** Write additional tests to achieve 100% coverage where applicable
+6. **Update Coverage Documentation:** Update `docs/test-coverage.md` with latest results
+
+### Coverage Commands (adjust based on project setup):
+- **Python/pytest:** `pytest --cov=src --cov-report=term-missing`
+- **Node.js/Jest:** `npm test -- --coverage`
+- **Other:** Use project-specific coverage tools
+
+## Output Format
+
+The generated implementation plan _must_ follow this structure:
+
+```markdown
+## Relevant Files
+
+- `path/to/potential/file1.ts` - Brief description of why this file is relevant (e.g., Contains the main component for this feature).
+- `path/to/file1.test.ts` - Unit tests for `file1.ts`.
+- `path/to/another/file.tsx` - Brief description (e.g., API route handler for data submission).
+- `path/to/another/file.test.tsx` - Unit tests for `another/file.tsx`.
+- `lib/utils/helpers.ts` - Brief description (e.g., Utility functions needed for calculations).
+- `lib/utils/helpers.test.ts` - Unit tests for `helpers.ts`.
+- `docs/test-coverage.md` - Test coverage report updated after each major task completion
+
+### Notes
+
+- **Testing Strategy:** Follow Test-Driven Development (TDD) approach - write tests first, then implementation
+- **Coverage Target:** Aim for 100% line coverage where applicable (excluding abstract methods/interfaces)
+- **Test Types:** Include unit tests, integration tests, and end-to-end tests as appropriate
+- **Coverage Updates:** Update `docs/test-coverage.md` after each major task (not sub-task) completion
+- Unit tests should typically be placed alongside the code files they are testing (e.g., `MyComponent.tsx` and `MyComponent.test.tsx` in the same directory).
+- Use project-specific test runners (e.g., `npx jest`, `pytest`, `npm test`) to execute tests.
+
+## Tasks
+
+- [ ] 1.0 Parent Task Title
+  - [ ] 1.1 [Sub-task description 1.1]
+    - Write comprehensive tests following TDD approach
+    - Run all tests and fix any failures
+    - Generate coverage report and analyze gaps
+    - Add tests to achieve target coverage
+  - [ ] 1.2 [Sub-task description 1.2]
+    - Write comprehensive tests following TDD approach
+    - Run all tests and fix any failures
+    - Generate coverage report and analyze gaps
+    - Add tests to achieve target coverage
+  - [ ] 1.3 Validate Task 1.0 completion
+    - Run complete test suite (all tests must pass)
+    - Generate final coverage report for Task 1.0
+    - Update `docs/test-coverage.md` with Task 1.0 results
+    - Verify all acceptance criteria are tested and covered
+- [ ] 2.0 Parent Task Title
+  - [ ] 2.1 [Sub-task description 2.1]
+    - Write comprehensive tests following TDD approach
+    - Run all tests and fix any failures
+    - Generate coverage report and analyze gaps
+    - Add tests to achieve target coverage
+  - [ ] 2.2 Validate Task 2.0 completion
+    - Run complete test suite (all tests must pass)
+    - Generate final coverage report for Task 2.0
+    - Update `docs/test-coverage.md` with Task 2.0 results
+    - Verify all acceptance criteria are tested and covered
+- [ ] 3.0 Parent Task Title (may not require sub-tasks if purely structural or configuration)
+  - [ ] 3.1 Validate Task 3.0 completion
+    - Run complete test suite (all tests must pass)
+    - Generate final coverage report for Task 3.0
+    - Update `docs/test-coverage.md` with Task 3.0 results
+```
+
+## Quality Gates
+
+Each task completion requires:
+
+1. **All Tests Passing:** 100% test success rate
+2. **Coverage Analysis:** Line coverage report generated and reviewed
+3. **Coverage Target:** Achieve highest practical coverage (aim for 100% where applicable)
+4. **Documentation Updated:** `out/test-coverage.md` reflects current state
+5. **No Regressions:** Existing functionality remains intact
+
+## Interaction Model
+
+The process explicitly requires a pause after generating parent tasks to get user confirmation ("Go") before proceeding to generate the detailed sub-tasks. This ensures the high-level plan aligns with user expectations before diving into details.
+
+## Target Audience
+
+Assume the primary reader of the implementation plan is a **junior developer** who will implement the feature following strict testing and quality standards.
