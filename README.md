@@ -44,9 +44,9 @@ flowchart LR
   D[Process Implementation Plan]
 
   A --> B
-  B -->|prd-[feature-name].md| C
-  C -->|impl-plan-[prd-file-name].md| D
-  D -->|Iterate: mark tasks, update files| D
+  B --> C
+  C --> D
+  D --> D
 ```
 
 ### 1) Create a PRD
