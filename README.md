@@ -38,9 +38,14 @@ The core flow uses three rules in the `product-dev` folder.
 
 ```mermaid
 flowchart LR
-  A[Prompt/Feature Idea] --> B(@product-dev/create-product-requirements.mdc)
-  B -->|Output: prd-[feature-name].md| C(@product-dev/create-implementation-plan.mdc)
-  C -->|Output: impl-plan-[prd-file-name].md| D(@product-dev/process-implementation-plan.mdc)
+  A[Prompt / Feature Idea]
+  B[Create Product Requirements]
+  C[Create Implementation Plan]
+  D[Process Implementation Plan]
+
+  A --> B
+  B -->|prd-[feature-name].md| C
+  C -->|impl-plan-[prd-file-name].md| D
   D -->|Iterate: mark tasks, update files| D
 ```
 
